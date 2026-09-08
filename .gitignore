@@ -5,16 +5,13 @@ node_modules/
 .env
 .env.local
 
-# Playwright
+# Playwright / reports
 /test-results/
 /playwright-report/
 /blob-report/
 /playwright/.cache/
 /playwright/.auth/
-
-# Reports (keep folder, ignore generated files)
-/reports/*
-!/reports/.gitkeep
+/reports/
 
 # OS / IDE
 .DS_Store

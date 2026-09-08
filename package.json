@@ -1,14 +1,19 @@
 {
   "name": "ph-automation",
   "version": "1.0.0",
-  "description": "Playwright SQA automation framework (JavaScript)",
+  "description": "Playwright SQA automation (ESM, functional)",
   "private": true,
+  "type": "module",
+  "imports": {
+    "#config/*": "./src/config/*",
+    "#data/*": "./src/data/*",
+    "#pages/*": "./src/pages/*",
+    "#flows/*": "./src/flows/*"
+  },
   "scripts": {
     "test": "playwright test",
     "test:smoke": "playwright test tests/smoke",
     "test:e2e": "playwright test tests/e2e",
-    "test:regression": "playwright test tests/regression",
-    "test:api": "playwright test tests/api",
     "test:chromium": "playwright test --project=chromium",
     "test:ui": "playwright test --ui",
     "test:headed": "playwright test --headed",
@@ -17,14 +22,7 @@
     "codegen": "playwright codegen",
     "install:browsers": "playwright install --with-deps"
   },
-  "keywords": [
-    "playwright",
-    "sqa",
-    "e2e",
-    "automation",
-    "javascript"
-  ],
-  "author": "",
+  "keywords": ["playwright", "sqa", "e2e", "esm"],
   "license": "ISC",
   "devDependencies": {
     "@playwright/test": "^1.63.0"

@@ -1,12 +1,9 @@
-// @ts-check
-const { defineConfig, devices } = require('@playwright/test');
-const { env } = require('./config/env');
+import { defineConfig, devices } from '@playwright/test';
+import { getEnv } from './src/config/env.js';
 
-/**
- * Playwright SQA configuration.
- * @see https://playwright.dev/docs/test-configuration
- */
-module.exports = defineConfig({
+const env = getEnv();
+
+export default defineConfig({
   testDir: './tests',
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
@@ -18,31 +15,26 @@ module.exports = defineConfig({
   },
   reporter: [
     ['list'],
-    ['html', { open: 'never', outputFolder: 'playwright-report' }],
-    ['junit', { outputFile: 'reports/junit-results.xml' }],
+    ['html', { open: 'always', outputFolder: 'playwright-report' }],
   ],
   outputDir: 'test-results',
   use: {
     baseURL: env.baseURL,
     headless: env.headless,
+    httpCredentials: env.httpCredentials,
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
-    video: 'retain-on-failure',
+    video: process.env.CI ? 'retain-on-failure' : 'off',
     actionTimeout: 15_000,
     navigationTimeout: 30_000,
   },
   projects: [
     {
       name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
-    },
-    {
-      name: 'firefox',
-      use: { ...devices['Desktop Firefox'] },
-    },
-    {
-      name: 'webkit',
-      use: { ...devices['Desktop Safari'] },
+      use: {
+        ...devices['Desktop Chrome'],
+        ...(env.useSystemChrome ? { channel: 'chrome' } : {}),
+      },
     },
   ],
 });
